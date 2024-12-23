@@ -13,7 +13,7 @@ const Payment = () => {
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.onload = () => {
         const options = {
-          key: 'YOUR_RAZORPAY_KEY', // Replace with your Razorpay key
+          key:process.env.REACT_APP_RAZORPAY_KEY,
           amount: price * 100, // Razorpay amount is in paise
           currency: 'INR',
           name: 'Event Management Platform',
