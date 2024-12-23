@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Admin from './Pages/Admin';
-import Bookingticket from './Posts/Bookingticket';
+import Bookingticket from './Posts/BookingTicket';
 import Payment from './Pages/Payment';
 import PageNotFound from './Pages/PageNotFound';
 import Register from './Pages/Register';
