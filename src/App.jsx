@@ -1,13 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
-// import Admin from './Pages/Admin';  // Change this line
 import Bookingticket from './Posts/Bookingticket';
 import Payment from './Pages/Payment';
 import PageNotFound from './Pages/PageNotFound';
 import Dashboard from './Pages/Dashboard';
 import Register from './Pages/Register';
 import Login from './Pages/Login';
-import Logout from './Pages/Logout';
 import HomePage from './Pages/HomePage';
 import EventListing from './Pages/EventListing';
 import Footer from './Components/Footer';
