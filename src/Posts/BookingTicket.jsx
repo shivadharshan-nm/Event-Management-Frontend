@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import api from '../Services/localStorage.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserDetailsContext } from '../App';
 
-const Bookingticket = ({ userData }) => {
+const BookingTicket = () => {
+  const { userData } = useContext(UserDetailsContext);
   const { event_id } = useParams();
   const _id = event_id;
   const navigate = useNavigate();
@@ -25,29 +27,21 @@ const Bookingticket = ({ userData }) => {
         if (eventData.ticketPricing.length > 0) {
           setTicketType(eventData.ticketPricing[0].tier);
           setTicketPrice(eventData.ticketPricing[0].price);
-          setTotalPrice(eventData.ticketPricing[0].price * ticketQuantity);
+          setTotalPrice(eventData.ticketPricing[0].price);
         }
       } catch (error) {
-        console.error("Error fetching event details:", error);
+        console.error('Error fetching event details:', error);
       }
     };
 
     fetchEventDetails();
   }, [_id]);
 
-  useEffect(() => {
-    if (postDetails.ticketPricing.length > 0) {
-      const selectedTicket = postDetails.ticketPricing.find(t => t.tier === ticketType);
-      const basePrice = selectedTicket ? selectedTicket.price : 0;
-      const calculatedTotal = basePrice * ticketQuantity;
-      setTotalPrice(calculatedTotal);
-    }
-  }, [ticketType, ticketQuantity, postDetails]);
-
   const handleTicketTypeChange = (type) => {
-    const selectedTicket = postDetails.ticketPricing.find(t => t.tier === type);
+    const selectedTicket = postDetails.ticketPricing.find(ticket => ticket.tier === type);
     setTicketType(type);
     setTicketPrice(selectedTicket ? selectedTicket.price : 0);
+    setTotalPrice(selectedTicket ? selectedTicket.price * ticketQuantity : 0);
   };
 
   const handleQuantityChange = (e) => {
@@ -58,6 +52,17 @@ const Bookingticket = ({ userData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('User Data:', userData);
+    console.log('Event ID:', _id);
+    console.log('Ticket Type:', ticketType);
+    console.log('Ticket Quantity:', ticketQuantity);
+    console.log('Total Price:', totalPrice);
+
+    if (!userData) {
+      alert('Please log in to book tickets.');
+      navigate('/login');
+      return;
+    }
     setLoading(true);
 
     try {
@@ -65,7 +70,8 @@ const Bookingticket = ({ userData }) => {
       navigate('/payment', {
         state: {
           event_id: _id,
-          user_id: userData.id,
+          username: userData.username,
+          name: userData.name,
           ticketTier: ticketType,
           quantity: ticketQuantity,
           price: totalPrice,
@@ -79,16 +85,14 @@ const Bookingticket = ({ userData }) => {
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Date not available';
+  const formatDate = (date) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Intl.DateTimeFormat('en-IN', options).format(new Date(dateString));
+    return new Date(date).toLocaleDateString(undefined, options);
   };
 
-  const formatTime = (timeString) => {
-    if (!timeString) return 'Time not available';
+  const formatTime = (time) => {
     const options = { hour: '2-digit', minute: '2-digit' };
-    return new Intl.DateTimeFormat('en-IN', options).format(new Date(`1970-01-01T${timeString}:00`));
+    return new Date(`1970-01-01T${time}Z`).toLocaleTimeString(undefined, options);
   };
 
   return (
@@ -164,4 +168,4 @@ const Bookingticket = ({ userData }) => {
   );
 };
 
-export default Bookingticket;
+export default BookingTicket;

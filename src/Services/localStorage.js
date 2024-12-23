@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5002/api/",
+  baseURL: "https://event-management-backend-gxmo.onrender.com/api/",
 });
 
 api.interceptors.request.use(

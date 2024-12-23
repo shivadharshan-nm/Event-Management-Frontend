@@ -1,253 +1,104 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../Services/localStorage.js";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import jwt_decode from "jwt-decode";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-export const Admin = () => {
-  const [activeTab, setActiveTab] = useState('login');
-  const [posts, setPosts] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [eventAnalytics, setEventAnalytics] = useState({});
-  const [userAnalytics, setUserAnalytics] = useState({});
-  const [error, setError] = useState(null);
-  const [admin, setAdmin] = useState(null);
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
-  const navigate = useNavigate();
+const Admin = () => {
+  const [events, setEvents] = useState([]);
+  const [payments, setPayments] = useState([]);
+  const [supportInquiries, setSupportInquiries] = useState([]);
+  const [reports, setReports] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = jwt_decode(token);
-      if (decodedToken.role === 'admin') {
-        setAdmin(decodedToken);
-        setActiveTab('dashboard');
-        fetchUnapprovedPosts();
-        fetchUsers();
-        fetchEventAnalytics();
-        fetchUserAnalytics();
-      } else {
-        toast.error("Unauthorized access");
-        navigate('/login');
-      }
-    }
-  }, [navigate]);
+    // Fetch initial data for events, payments, support inquiries, and reports
+    fetchEvents();
+    fetchPayments();
+    fetchSupportInquiries();
+    fetchReports();
+  }, []);
 
-  const fetchUnapprovedPosts = async () => {
-    try {
-      const response = await api.get("/api/events/");
-      setPosts(response.data.posts);
-    } catch (error) {
-      setError(error.response?.data?.message || "Error fetching unapproved posts");
-    }
+  const fetchEvents = async () => {
+    const response = await axios.get('/api/events');
+    setEvents(Array.isArray(response.data) ? response.data : []);
   };
 
-  const fetchUsers = async () => {
-    try {
-      const response = await api.get("/api/users");
-      setUsers(response.data);
-    } catch (error) {
-      setError(error.response?.data?.message || "Error fetching users");
-    }
+  const fetchPayments = async () => {
+    const response = await axios.get('/api/payments');
+    setPayments(Array.isArray(response.data) ? response.data : []);
   };
 
-  const fetchEventAnalytics = async () => {
-    try {
-      const response = await api.get("/api/events/analytics");
-      setEventAnalytics(response.data);
-    } catch (error) {
-      setError(error.response?.data?.message || "Error fetching event analytics");
-    }
+  const fetchSupportInquiries = async () => {
+    const response = await axios.get('/api/support-inquiries');
+    setSupportInquiries(Array.isArray(response.data) ? response.data : []);
   };
 
-  const fetchUserAnalytics = async () => {
-    try {
-      const response = await api.get("/api/users/analytics");
-      setUserAnalytics(response.data);
-    } catch (error) {
-      setError(error.response?.data?.message || "Error fetching user analytics");
-    }
+  const fetchReports = async () => {
+    const response = await axios.get('/api/reports');
+    setReports(Array.isArray(response.data) ? response.data : []);
   };
 
-  const approveEvent = async (id) => {
-    try {
-      await api.put(`/api/posts/approve/${id}`);
-      toast.success("Event approved successfully");
-      fetchUnapprovedPosts();
-    } catch (error) {
-      toast.error("Error approving event");
+  const handleMonitorPayments = async () => {
+    fetchPayments();
+  };
+
+  const handleUserSupport = async () => {
+    fetchSupportInquiries();
+  };
+
+  const generateReports = async () => {
+    setReports([]);
+    for (const event of events) {
+      const { data: tickets } = await axios.get(`/api/tickets/event/${event.id}`);
+      const totalRevenue = tickets.reduce(
+        (sum, ticket) => sum + (ticket.price * ticket.quantity), 
+        0
+      );
+      setReports(prev => [
+        ...prev,
+        {
+          eventPerformance: 'Placeholder performance',
+          revenue: `$${totalRevenue}`,
+          attendeeFeedback: 'Placeholder feedback'
+        }
+      ]);
     }
   };
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const handleLoginChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials((prevCredentials) => ({
-      ...prevCredentials,
-      [name]: value,
-    }));
-  };
-
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await api.post('/auth/login', credentials);
-      const { token } = response.data;
-      localStorage.setItem('token', token);
-      const decodedToken = jwt_decode(token);
-      if (decodedToken.role === 'admin') {
-        setAdmin(decodedToken);
-        setActiveTab('dashboard');
-        toast.success("Login successful");
-      } else {
-        toast.error("Unauthorized access");
-        localStorage.removeItem('token');
-      }
-    } catch (error) {
-      toast.error("Login failed");
-    }
-  };
-
-  if (!admin) {
-    return (
-      <div className="min-h-screen bg-gray-100 p-4 flex items-center justify-center">
-        <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
-          <form onSubmit={handleLoginSubmit}>
-            <div className="mb-4">
-              <label className="block text-gray-700">Username</label>
-              <input
-                type="text"
-                name="username"
-                value={credentials.username}
-                onChange={handleLoginChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={credentials.password}
-                onChange={handleLoginChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              Login
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-      <div className="bg-white p-4 rounded-lg shadow-lg">
-        <div className="flex justify-between mb-4">
-          <button
-            className={`px-4 py-2 ${activeTab === 'dashboard' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => handleTabClick('dashboard')}
-          >
-            Dashboard
-          </button>
-          <button
-            className={`px-4 py-2 ${activeTab === 'events' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => handleTabClick('events')}
-          >
-            Events
-          </button>
-          <button
-            className={`px-4 py-2 ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => handleTabClick('users')}
-          >
-            Users
-          </button>
-          <button
-            className={`px-4 py-2 ${activeTab === 'analytics' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => handleTabClick('analytics')}
-          >
-            Analytics
-          </button>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">Actions</h2>
+          <button onClick={handleMonitorPayments} className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mb-4">Monitor Payments</button>
+          <button onClick={handleUserSupport} className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mb-4">User Support</button>
+          <button onClick={generateReports} className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Generate Reports</button>
         </div>
 
-        {activeTab === 'dashboard' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
-            <p>Welcome to the admin dashboard. Use the tabs to navigate through different sections.</p>
-          </div>
-        )}
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">Support Inquiries</h2>
+          <ul className="space-y-4">
+            {Array.isArray(supportInquiries) && supportInquiries.map(inquiry => (
+              <li key={inquiry.id} className="border-b pb-2">
+                <p className="text-gray-700">{inquiry.message}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        {activeTab === 'events' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Unapproved Events</h2>
-            {error && <p className="text-red-500">{error}</p>}
-            <ul>
-              {posts.map((post) => (
-                <li key={post.id} className="mb-2">
-                  <div className="bg-gray-200 p-2 rounded-lg">
-                    <h3 className="text-xl font-bold">{post.title}</h3>
-                    <p>{post.description}</p>
-                    <button
-                      onClick={() => approveEvent(post.id)}
-                      className="bg-green-500 text-white px-4 py-2 rounded-lg mt-2"
-                    >
-                      Approve
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {activeTab === 'users' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Users</h2>
-            {error && <p className="text-red-500">{error}</p>}
-            <ul>
-              {users.map((user) => (
-                <li key={user.id} className="mb-2">
-                  <div className="bg-gray-200 p-2 rounded-lg">
-                    <h3 className="text-xl font-bold">{user.username}</h3>
-                    <p>Email: {user.email}</p>
-                    <p>Phone: {user.phone}</p>
-                    <p>Role: {user.role}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {activeTab === 'analytics' && (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Analytics</h2>
-            <div className="mb-4">
-              <h3 className="text-xl font-bold">Event Analytics</h3>
-              <p>Total Events: {eventAnalytics.totalEvents}</p>
-              <p>Total Attendance: {eventAnalytics.totalAttendance}</p>
-              <p>Total Revenue: ₹{eventAnalytics.totalRevenue}</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold">User Analytics</h3>
-              <p>Total Users: {userAnalytics.totalUsers}</p>
-              <p>Active Users: {userAnalytics.activeUsers}</p>
-              <p>New Users This Month: {userAnalytics.newUsersThisMonth}</p>
-            </div>
-          </div>
-        )}
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">Reports</h2>
+          <ul className="space-y-4">
+            {reports.map((report, index) => (
+              <li key={index} className="border-b pb-2">
+                <p className="text-gray-700">Event Performance: {report.eventPerformance}</p>
+                <p className="text-gray-700">Revenue: {report.revenue}</p>
+                <p className="text-gray-700">Attendee Feedback: {report.attendeeFeedback}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
 };
+
+export default Admin;
