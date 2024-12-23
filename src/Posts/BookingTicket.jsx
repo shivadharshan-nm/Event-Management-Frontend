@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import api from '../Services/localStorage.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserDetailsContext } from '../App';
+import api from '../Services/localStorage.js';
 
 const BookingTicket = () => {
   const { userData } = useContext(UserDetailsContext);
@@ -85,16 +85,6 @@ const BookingTicket = () => {
     }
   };
 
-  const formatDate = (date) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(date).toLocaleDateString(undefined, options);
-  };
-
-  const formatTime = (time) => {
-    const options = { hour: '2-digit', minute: '2-digit' };
-    return new Date(`1970-01-01T${time}Z`).toLocaleTimeString(undefined, options);
-  };
-
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -108,11 +98,11 @@ const BookingTicket = () => {
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700">Date</label>
-                <p className="text-gray-900">{formatDate(postDetails.date)}</p>
+                <p className="text-gray-900">{new Date(postDetails.date).toLocaleDateString()}</p>
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700">Time</label>
-                <p className="text-gray-900">{formatTime(postDetails.time)}</p>
+                <p className="text-gray-900">{new Date(`1970-01-01T${postDetails.time}Z`).toLocaleTimeString()}</p>
               </div>
               <div className="mb-2">
                 <label className="block text-gray-700">Location</label>
