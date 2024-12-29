@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../Services/localStorage';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,53 +33,53 @@ const Login = ({ setIsLoggedIn }) => {
                 localStorage.removeItem('token');
             }
         } catch (error) {
-            toast.error('Login failed');
+            toast.error('Login failed. Please check your credentials and try again.');
         }
     };
 
     return (
-        <>
-            <div className="min-h-screen bg-gray-100 p-4 flex items-center justify-center">
-                <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-md">
-                    <h2 className="text-2xl font-bold mb-4">Login</h2>
-                    <form onSubmit={handleLoginSubmit}>
-                        <div className="mb-4">
-                            <label className="block text-gray-700">Username</label>
-                            <input
-                                type="text"
-                                name="username"
-                                value={credentials.username}
-                                onChange={handleLoginChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-700">Password</label>
-                            <input
-                                type="password"
-                                name="password"
-                                value={credentials.password}
-                                onChange={handleLoginChange}
-                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        >
-                            Login
-                        </button>
-                    </form>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-4">Login</h2>
+                <form onSubmit={handleLoginSubmit}>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            value={credentials.username}
+                            onChange={handleLoginChange}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={credentials.password}
+                            onChange={handleLoginChange}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            required
+                        />
+                    </div>
                     <button
-                        onClick={() => navigate('/request-password-reset')}
-                        className="mt-4 w-full py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                        type="submit"
+                        className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
                     >
-                        Forgot Password
+                        Login
                     </button>
-                </div>
+                </form>
+                <p className="mt-4 text-gray-700">
+                    New user?{' '}
+                    <Link to="/register" className="text-blue-600 hover:underline">
+                        Register here
+                    </Link>
+                </p>
             </div>
             <ToastContainer />
-        </>
+        </div>
     );
 };
 
