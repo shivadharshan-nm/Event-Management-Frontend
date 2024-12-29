@@ -75,10 +75,20 @@ const Homepage = ({ isLoggedIn }) => {
                     <h1 className="hero-heading text-gray-300 text-6xl md:text-5xl lg:text-7xl font-light">Welcome to Eventify <br/> Your Gateway to the <br/> World of Events.</h1>
                     <div className="hero-text mt-12">
                       <p className="text-gray-400 text-4xl">Find the perfect event for your next adventure</p>
+                      <br/>
+                      <p className="text-gray-400 text-4xl">Join the community by registering to get started</p>
                     </div>
                     <Link to={"/register"}>
-                      <div className="button-box mt-12 flex justify-center">
-                        <button className="bg-blue-800 text-white py-3 px-6 rounded-lg text-lg">Register Now</button>
+                      <div className="button-box mt-09 flex justify-center">
+                        <button className="bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">Register Now</button>
+                      </div>
+                    </Link>
+                    <div className="hero-text mt-10">
+                      <p className="text-gray-400 text-4xl">Familiar with Eventify?</p>
+                    </div>
+                    <Link to={"/login"}>
+                      <div className="button-box mt-08 flex justify-center">
+                        <button className="bg-blue-800 text-white py-2 px-8 rounded-lg text-lg">Login here</button>
                       </div>
                     </Link>
                   </div>

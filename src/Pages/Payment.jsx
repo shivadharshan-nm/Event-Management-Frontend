@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../Services/localStorage.js';
 
@@ -6,6 +6,8 @@ const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { event_id, user_id, ticketTier, quantity, price, orderId } = location.state;
+  const [loading, setLoading] = useState(false);
+  const [timer, setTimer] = useState(5);
 
   useEffect(() => {
     const loadRazorpay = async () => {
@@ -30,40 +32,51 @@ const Payment = () => {
                 payment_id: response.razorpay_payment_id,
               };
               const result = await api.post('/payments/success', paymentData);
-              if (result.data.success) {
-                navigate('/success');
-              } else {
-                navigate('/failure');
-              }
+              setLoading(true);
+              setTimeout(() => {
+                navigate('/events');
+              }, 5000);
             } catch (error) {
-              console.error('Payment failed:', error);
-              navigate('/failure');
+              console.error("Payment success error:", error);
             }
           },
-          prefill: {
-            name: 'Your Name', // Replace with user's name
-            email: 'your.email@example.com', // Replace with user's email
-            contact: '9999999999', // Replace with user's contact number
-          },
-          theme: {
-            color: '#3399cc',
-          },
+          modal: {
+            ondismiss: () => {
+              setLoading(true);
+              setTimeout(() => {
+                navigate('/events');
+              }, 5000);
+            }
+          }
         };
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
       };
-      script.onerror = () => {
-        console.error('Razorpay SDK failed to load.');
-      };
       document.body.appendChild(script);
     };
-
     loadRazorpay();
   }, [event_id, user_id, ticketTier, quantity, price, orderId, navigate]);
 
+  useEffect(() => {
+    if (loading) {
+      const countdown = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+      return () => clearInterval(countdown);
+    }
+  }, [loading]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h2 className="text-2xl font-bold">Processing Payment...</h2>
+    <div className="flex justify-center items-center h-screen">
+      {loading ? (
+        <div className="text-center">
+          <p className="text-2xl font-semibold">Redirecting to events page in {timer} seconds...</p>
+        </div>
+      ) : (
+        <div className="text-center">
+          <p className="text-2xl font-semibold">Loading payment gateway...</p>
+        </div>
+      )}
     </div>
   );
 };
