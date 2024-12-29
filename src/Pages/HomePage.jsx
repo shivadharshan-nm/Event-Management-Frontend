@@ -41,8 +41,7 @@ const Homepage = ({ isLoggedIn }) => {
   };
 
   return (
-    <>
-
+    <div className="flex flex-col min-h-screen">
       {isLoggedIn ? (
         <>
           <Slider {...settings}>
@@ -66,7 +65,7 @@ const Homepage = ({ isLoggedIn }) => {
           </Slider>
         </>
       ) : (
-        <herosection>
+        <herosection className="flex-grow">
           <div className='bg-gray-800 h-[605px] flex justify-center items-center relative'>
             <div className="relative w-full h-full flex flex-col justify-center items-center text-white py-20">
               <div className="wrapper mx-auto max-w-screen-xl px-6">
@@ -79,18 +78,20 @@ const Homepage = ({ isLoggedIn }) => {
                       <p className="text-gray-400 text-4xl">Join the community by registering to get started</p>
                     </div>
                     <Link to={"/register"}>
-                      <div className="button-box mt-09 flex justify-center">
+                      <div className="button-box mt-10 flex justify-center">
                         <button className="bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">Register Now</button>
                       </div>
                     </Link>
+
                     <div className="hero-text mt-10">
                       <p className="text-gray-400 text-4xl">Familiar with Eventify?</p>
-                    </div>
-                    <Link to={"/login"}>
-                      <div className="button-box mt-08 flex justify-center">
-                        <button className="bg-blue-800 text-white py-2 px-8 rounded-lg text-lg">Login here</button>
+                      <Link to={"/login"}>
+                      <div className="button-box mt-09 flex justify-center">
+                        <button className="bg-blue-800 text-white py-1 px-5 rounded-lg text-lg">Login here</button>
                       </div>
                     </Link>
+                    </div>
+                    
                   </div>
                 </div>
               </div>
@@ -98,7 +99,8 @@ const Homepage = ({ isLoggedIn }) => {
           </div>
         </herosection>
       )}
-    </>
+      
+    </div>
   );
 };
 
