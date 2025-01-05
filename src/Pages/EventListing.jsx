@@ -54,14 +54,15 @@ const EventListing = () => {
   };
 
   return (
+    <div className='bg-gray-800'>
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Events</h1>
+      <h1 className="text-3xl text-blue-500 font-bold mb-4">Events</h1>
       <div className="mb-4">
-        <label className="block text-gray-700">Category</label>
+        <label className="block text-white">Categories:</label>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded mt-1"
+          className="w-full p-2 border border-gray-800 rounded mt-1"
         >
           <option value="All">All</option>
           {categories.map((cat) => (
@@ -70,7 +71,7 @@ const EventListing = () => {
         </select>
       </div>
       {loading ? (
-        <div className="text-center">
+        <div className="text-center text-white">
           <p>Loading events...</p>
         </div>
       ) : filteredEvents.length === 0 ? (
@@ -111,6 +112,7 @@ const EventListing = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

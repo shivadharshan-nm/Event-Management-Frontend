@@ -55,9 +55,10 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-800 p-8 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">User Dashboard</h2>
+        <h4 className="text-lg font-semibold mb-4">Enter the details to be updated below :</h4>
         <form onSubmit={handleUpdate}>
           <div className="mb-4">
             <label className="block text-gray-700">Username</label>
@@ -84,9 +85,10 @@ const Settings = () => {
             Update Profile
           </button>
         </form>
+        <h4 className="text-lg font-semibold mt-6">Feel free to change your password :</h4>
         <button
           onClick={handlePasswordChange}
-          className="mt-4 w-full py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
+          className="mt-4 w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
         >
           Change Password
         </button>

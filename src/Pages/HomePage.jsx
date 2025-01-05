@@ -42,7 +42,7 @@ const Homepage = ({ isLoggedIn }) => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen" >
       {isLoggedIn ? (
         <>
           <Slider {...settings} className="w-full">

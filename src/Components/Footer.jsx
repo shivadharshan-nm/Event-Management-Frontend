@@ -3,29 +3,31 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
     return (
        <div>
-        <footer className="bg-gray-100">
+        <footer className="bg-gray-800">
   <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-  <p className="text-center text-2xl font-bold text-gray-900">   
+  <p className="text-center text-2xl font-bold text-blue-500">   
     <Link to="/" > Eventify  </Link> 
     </p>
-    <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
+    <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-100">
       Oops...You've reached the end of this page. Nothing more to see here. 
        We're working on adding more content to the entertainment hub. Stay tuned!
     </p>
 
-    <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
+    <ul className="mt-12 flex flex-wrap justify-center text-gray-100 gap-6 md:gap-8 lg:gap-12">
 
       <li>
-      <Link to="/" > Home</Link>
+      <Link to="/" className=' hover:text-blue-500'> Home</Link>
       </li>
 
       <li>
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/settings" className=' hover:text-blue-500'>Dashboard</Link>
       </li>
 
       <li>
-        <Link to="/profile">Profile</Link>
+        <Link to="/events" className=' hover:text-blue-500'>Events</Link>
       </li>
+
+     
 
     </ul>
 
@@ -35,7 +37,7 @@ const Footer = () => {
           href="#"
           rel="noreferrer"
           target="_blank"
-          className="text-gray-700 transition hover:text-gray-700/75"
+          className="text-gray-100 transition hover:text-blue-500/75"
         >
           <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -48,7 +50,12 @@ const Footer = () => {
       </li>
 
       <li>
-        
+      <a
+          href="#"
+          rel="noreferrer"
+          target="_blank"
+          className="text-gray-100 transition hover:text-blue-500/75"
+        >
           <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fillRule="evenodd"
@@ -56,6 +63,7 @@ const Footer = () => {
               clipRule="evenodd"
             />
           </svg>
+        </a>
       </li>
 
       <li>
@@ -63,7 +71,7 @@ const Footer = () => {
           href="#"
           rel="noreferrer"
           target="_blank"
-          className="text-gray-700 transition hover:text-gray-700/75"
+          className="text-gray-100 transition hover:text-blue-500/75"
         >
           <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -78,7 +86,7 @@ const Footer = () => {
           href="#"
           rel="noreferrer"
           target="_blank"
-          className="text-gray-700 transition hover:text-gray-700/75"
+          className="text-gray-100 transition hover:text-blue-500/75"
         >
 
           <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
