@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../Services/localStorage.js';
+import api from '../Services/localStorage.js'; // Ensure the correct path to your API service
 
 const EventListing = ({ isLoggedIn }) => {
   const [events, setEvents] = useState([]);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('All');
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
+      setLoading(true);
       try {
         const response = await api.get('/events');
         setEvents(response.data);
@@ -19,6 +21,8 @@ const EventListing = ({ isLoggedIn }) => {
         setCategories(uniqueCategories);
       } catch (error) {
         console.error('Error fetching events:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -37,86 +41,47 @@ const EventListing = ({ isLoggedIn }) => {
     setSelectedEvent(null);
   };
 
-  const formatDate = (date) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(date).toLocaleDateString(undefined, options);
-  };
-
-  const formatTime = (time) => {
-    const options = { hour: '2-digit', minute: '2-digit' };
-    return new Date(`1970-01-01T${time}Z`).toLocaleTimeString(undefined, options);
-  };
-
   return (
-    <div className="container mx-auto mt-8">
-      {isLoggedIn ? (
-        <>
-          <h1 className="text-3xl font-bold text-center">Events</h1>
-          <div className="flex justify-center mt-4">
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="border rounded-lg px-4 py-2"
-            >
-              <option value="All">All</option>
-              {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {filteredEvents.map(event => (
-              <div key={event.id} className="bg-white shadow rounded-lg p-4">
-                <img src={event.media.images[0]} alt={event.name} className="w-full h-48 object-cover rounded-t-lg" />
-                <h3 className="text-xl font-bold mt-4">{event.name}</h3>
-                <p className="text-gray-700 mt-2">{event.description}</p>
-                <p className="text-gray-500 mt-2">Date: {formatDate(event.date)}</p>
-                <p className="text-gray-500 mt-2">Time: {formatTime(event.time)}</p>
-                <p className="text-gray-500 mt-2">Category: {event.category}</p>
-                <button
-                  onClick={() => handleViewDetails(event)}
-                  className="text-blue-600 hover:underline mt-4 block"
-                >
-                  View Details
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {selectedEvent && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-              <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6 relative">
-                <button
-                  onClick={handleCloseModal}
-                  className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-                >
-                  &times;
-                </button>
-                <img src={selectedEvent.media.images[0]} alt={selectedEvent.name} className="w-full h-64 object-cover rounded-t-lg" />
-                <h2 className="text-2xl font-bold mt-4">{selectedEvent.name}</h2>
-                <p className="text-gray-700 mt-2">{selectedEvent.description}</p>
-                <p className="text-gray-500 mb-2">Date: {formatDate(selectedEvent.date)}</p>
-                <p className="text-gray-500 mb-2">Time: {formatTime(selectedEvent.time)}</p>
-                <p className="text-gray-500 mt-2">Location: {selectedEvent.location}</p>
-                <p className="text-gray-500 mt-2">Category: {selectedEvent.category}</p>
-                <div className="flex justify-between items-center mt-4">
-                  <Link
-                    to={`/ticketbooking/${selectedEvent.id}`}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                  >
-                    Book a Ticket
-                  </Link>
-                </div>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">Event Listings</h1>
+      <div className="mb-4">
+        <label className="block text-gray-700">Category</label>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded mt-1"
+        >
+          <option value="All">All</option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
+      </div>
+      {loading ? (
+        <div className="text-center">
+          <p>Loading events...</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredEvents.map((event) => (
+            <div key={event.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <img src={event.bannerUrl} alt={event.name} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h2 className="text-xl font-bold">{event.name}</h2>
+                <p className="text-gray-700">{event.description}</p>
+                <Link to={`/events/${event.id}`} className="text-blue-500 hover:underline mt-2 inline-block">View Details</Link>
               </div>
             </div>
-          )}
-        </>
-      ) : (
-        <div className="text-center mt-8">
-          <h2 className="text-2xl font-bold">Please log in to view events.</h2>
-          <Link to="/login" className="text-blue-600 hover:underline mt-4 block">
-            Go to Login
-          </Link>
+          ))}
+        </div>
+      )}
+      {selectedEvent && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold">{selectedEvent.name}</h2>
+            <p>{selectedEvent.description}</p>
+            <button onClick={handleCloseModal} className="mt-4 bg-blue-500 text-white p-2 rounded-lg">Close</button>
+          </div>
         </div>
       )}
     </div>

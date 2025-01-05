@@ -5,7 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { decodeToken } from '../Utils/decodeToken';
 
-const Login = ({ setIsLoggedIn }) => {
+const LoginPage = ({ setIsLoggedIn }) => {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ const Login = ({ setIsLoggedIn }) => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-800">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-4">Login</h2>
                 <form onSubmit={handleLoginSubmit}>
@@ -83,4 +83,4 @@ const Login = ({ setIsLoggedIn }) => {
     );
 };
 
-export default Login;
+export default LoginPage;

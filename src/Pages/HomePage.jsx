@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from '@ant-design/react-slick';
-import api from '../Services/localStorage.js';
-import { FaIoxhost } from "react-icons/fa6";
+import api from '../Services/localStorage'; // Ensure the correct path to your API service
+
 const Homepage = ({ isLoggedIn }) => {
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
@@ -31,12 +31,13 @@ const Homepage = ({ isLoggedIn }) => {
     };
   }, [isLoggedIn]);
 
-  let settings = {
+  const settings = {
     dots: true,
     infinite: true,
+    speed: 500,
     autoplay: true,
     autoplaySpeed: 2000,
-    slidesToShow: 3,
+    slidesToShow: 1,
     slidesToScroll: 1,
   };
 
@@ -44,22 +45,24 @@ const Homepage = ({ isLoggedIn }) => {
     <div className="flex flex-col min-h-screen">
       {isLoggedIn ? (
         <>
-          <Slider {...settings}>
+          <Slider {...settings} className="w-full">
             {events.map((event) => (
-              <div key={event.id}>
+              <div key={event.id} className="relative">
                 <img
                   src={event.media?.images?.[0] || ''}
                   alt={event.name}
-                  style={{ width: '100%', height: 'auto' }}
+                  className="w-full h-96 object-cover"
                 />
-                <h3>{event.name}</h3>
-                <p>{event.description}</p>
-                <p>Date: {event.date}</p>
-                <p>Time: {event.time}</p>
-                <p>Category: {event.category}</p>
-                <p>
-                  Location: {event.location?.coordinates?.[0]}, {event.location?.coordinates?.[1]}
-                </p>
+                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                  <h3 className="text-2xl font-bold">{event.name}</h3>
+                  <p>{event.description}</p>
+                  <p>Date: {event.date}</p>
+                  <p>Time: {event.time}</p>
+                  <p>Category: {event.category}</p>
+                  <p>
+                    Location: {event.location?.coordinates?.[0]}, {event.location?.coordinates?.[1]}
+                  </p>
+                </div>
               </div>
             ))}
           </Slider>
@@ -82,16 +85,14 @@ const Homepage = ({ isLoggedIn }) => {
                         <button className="bg-blue-800 text-white py-2 px-6 rounded-lg text-lg">Register Now</button>
                       </div>
                     </Link>
-
                     <div className="hero-text mt-10">
                       <p className="text-gray-400 text-4xl">Familiar with Eventify?</p>
-                      <Link to={"/login"}>
+                    </div>
+                    <Link to={"/login"}>
                       <div className="button-box mt-09 flex justify-center">
                         <button className="bg-blue-800 text-white py-1 px-5 rounded-lg text-lg">Login here</button>
                       </div>
                     </Link>
-                    </div>
-                    
                   </div>
                 </div>
               </div>
@@ -99,7 +100,6 @@ const Homepage = ({ isLoggedIn }) => {
           </div>
         </herosection>
       )}
-      
     </div>
   );
 };
