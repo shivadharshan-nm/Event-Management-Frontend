@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "../Services/localStorage.js";
+import api from "../Services/Api.js";
 import { Link, useNavigate } from "react-router-dom";
 
 const Event = ({ posterDetail, posterId }) => {
@@ -47,6 +47,8 @@ const Event = ({ posterDetail, posterId }) => {
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const getImageUrl = (event) => event.media?.images?.[0] || '';
+
   return (
     <div>
       
@@ -80,7 +82,11 @@ const Event = ({ posterDetail, posterId }) => {
                 {filteredEvents.map((Event) => (
                   <span key={Event._id} className="bg-white shadow rounded relative border transform transition-transform duration-300 hover:scale-105">
                     <div className="bg-white rounded overflow-hidden">
-                      <img src={Event.image} alt={Event.title} className="w-full h-52 object-cover" />
+                      <img
+                        src={getImageUrl(Event)}
+                        alt={Event.title}
+                        className="w-full h-52 object-cover"
+                      />
                       <div className="p-6">
                         <h3 className="text-lg font-bold text-gray-800 mb-3">{Event.title}</h3>
                         <p className="text-gray-500 priceinput text-sm">{Event.description}</p>

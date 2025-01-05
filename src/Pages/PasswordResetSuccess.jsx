@@ -5,7 +5,7 @@ const PasswordResetSuccess = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen bg-gray-100 p-4 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-800 p-4 flex items-center justify-center">
             <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-md text-center">
                 <h2 className="text-2xl font-bold mb-4">Password Reset Successful</h2>
                 <p>Your password has been reset successfully.</p>

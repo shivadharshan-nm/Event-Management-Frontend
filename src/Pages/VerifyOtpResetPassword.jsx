@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import api from '../Services/localStorage';
+import api from '../Services/Api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

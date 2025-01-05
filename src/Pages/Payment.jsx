@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import api from '../Services/localStorage.js';
+import api from '../Services/Api.js';
 
 const Payment = () => {
   const location = useLocation();

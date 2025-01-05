@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from '@ant-design/react-slick';
-import api from '../Services/localStorage'; // Ensure the correct path to your API service
+import api from '../Services/Api'; 
 
 const Homepage = ({ isLoggedIn }) => {
   const [events, setEvents] = useState([]);
@@ -47,7 +47,7 @@ const Homepage = ({ isLoggedIn }) => {
         <>
           <Slider {...settings} className="w-full">
             {events.map((event) => (
-              <div key={event.id} className="relative">
+              <div key={event._id} className="relative">
                 <img
                   src={event.media?.images?.[0] || ''}
                   alt={event.name}
@@ -62,6 +62,12 @@ const Homepage = ({ isLoggedIn }) => {
                   <p>
                     Location: {event.location?.coordinates?.[0]}, {event.location?.coordinates?.[1]}
                   </p>
+                  <Link
+                    to={`/event/${event._id}`}
+                    className="bg-blue-600 text-white px-3 py-1 rounded mt-2 inline-block"
+                  >
+                    View Details
+                  </Link>
                 </div>
               </div>
             ))}

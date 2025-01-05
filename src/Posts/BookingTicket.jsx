@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserDetailsContext } from '../App';
-import api from '../Services/localStorage.js';
+import api from '../Services/Api.js';
 
 const BookingTicket = () => {
   const { userData } = useContext(UserDetailsContext);

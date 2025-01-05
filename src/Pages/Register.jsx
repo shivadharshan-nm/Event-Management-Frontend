@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import api from '../Services/localStorage';
+import api from '../Services/Api';
 
 const Register = () => {
   const [name, setName] = useState("");

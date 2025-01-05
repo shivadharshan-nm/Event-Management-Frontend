@@ -55,6 +55,8 @@ const App = () => {
                             <Route path="/verify-otp-reset-password" element={<VerifyOtpResetPassword />} />
                             <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
                             <Route path="/logout" element={<LogoutPage setIsLoggedIn={setIsLoggedIn} />} />
+                            <Route path="/eventListing/:event_id" element={<EventListing />} />
+                            <Route path="/posts/bookingTicket/:event_id" element={<Bookingticket />} />
                             <Route path="*" element={<PageNotFound />} />
                         </Routes>
                     </main>
