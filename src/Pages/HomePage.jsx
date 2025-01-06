@@ -63,7 +63,7 @@ const Homepage = ({ isLoggedIn }) => {
                     Location: {event.location?.coordinates?.[0]}, {event.location?.coordinates?.[1]}
                   </p>
                   <Link
-                    to={`/event/${event._id}`}
+                    to={`/eventListing/${event.id}`}
                     className="bg-blue-600 text-white px-3 py-1 rounded mt-2 inline-block"
                   >
                     View Details
