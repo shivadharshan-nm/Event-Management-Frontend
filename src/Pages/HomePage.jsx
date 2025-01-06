@@ -45,6 +45,7 @@ const Homepage = ({ isLoggedIn }) => {
     <div className="flex flex-col min-h-screen" >
       {isLoggedIn ? (
         <>
+         <div className="flex flex-col min-h-screen bg-gray-800 ">
           <Slider {...settings} className="w-full bg-gray-800">
             {events.map((event) => (
               <div key={event._id} className="relative">
@@ -72,8 +73,10 @@ const Homepage = ({ isLoggedIn }) => {
               </div>
             ))}
           </Slider>
+          </div>
         </>
       ) : (
+        <div className="flex flex-col min-h-screen bg-gray-800 "> 
         <herosection className="flex-grow">
           <div className='bg-gray-800 h-[605px] flex justify-center items-center relative'>
             <div className="relative w-full h-full flex flex-col justify-center items-center text-white py-20">
@@ -105,6 +108,7 @@ const Homepage = ({ isLoggedIn }) => {
             </div>
           </div>
         </herosection>
+        </div>
       )}
     </div>
   );

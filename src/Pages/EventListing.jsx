@@ -55,7 +55,7 @@ const EventListing = () => {
   };
 
   return (
-    <div className='bg-gray-800'>
+    <div className='lex flex-col min-h-screen bg-gray-800'>
     <div className="container mx-auto p-4">
       <h1 className="text-3xl text-blue-500 font-bold mb-4">Events</h1>
       <div className="mb-4">
@@ -72,7 +72,7 @@ const EventListing = () => {
         </select>
       </div>
       {loading ? (
-        <div className="text-center text-white">
+        <div className="text-center text-white text-2xl animate-bounce">  
           <p>Loading events...</p>
         </div>
       ) : filteredEvents.length === 0 ? (
