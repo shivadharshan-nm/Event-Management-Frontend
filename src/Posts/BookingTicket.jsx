@@ -59,6 +59,33 @@ const BookingTicket = () => {
     setTotalPrice(quantity * ticketPrice);
   };
 
+  const handleBooking = async () => {
+    if (!userData) {
+      toast.error('You must be logged in to book a ticket!');
+      navigate('/login');  // Redirect to login page if not logged in
+      return;
+    }
+  
+    try {
+      // Navigate to the payment page with the necessary parameters
+      navigate('/payment', {
+        state: {
+          event_id: _id,
+          username: userData.username,
+          name: userData.name,
+          ticketTier: ticketType,
+          quantity: ticketQuantity,
+          price: totalPrice,
+        },
+      });
+    } catch (error) {
+      toast.error('An error occurred. Please try again.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('User Data:', userData);

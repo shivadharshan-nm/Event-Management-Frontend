@@ -108,10 +108,10 @@ const EventListing = () => {
                 <li key={booking.id}>{booking.userName} - {booking.quantity} tickets</li>
               ))}
             </ul>
-            <button onClick={handleCloseModal} className="mt-4 bg-blue-500 text-white p-2 rounded-lg">Close</button>
+            <button onClick={handleCloseModal} className="mt-4 bg-red-600 text-white p-1 rounded-lg">Close</button>
             <Link 
               to={`/posts/bookingTicket/${selectedEvent.id}`} 
-              className="mt-4 bg-green-500 text-white p-2 rounded-lg inline-block"
+              className="mt-5 bg-blue-500 text-white p-1 rounded-lg inline-block"
             >
               Book Tickets
             </Link>
