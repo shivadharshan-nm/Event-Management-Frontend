@@ -52,6 +52,7 @@ const BookingTicket = () => {
     setTotalPrice(selectedTicket ? selectedTicket.price * ticketQuantity : 0);
   };
 
+
   const handleQuantityChange = (e) => {
     const quantity = parseInt(e.target.value, 10);
     setTicketQuantity(quantity);
@@ -95,7 +96,7 @@ const BookingTicket = () => {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-gray-800">
         <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row">
           <div className="p-4 flex flex-col justify-between w-full">
             <div>
