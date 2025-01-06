@@ -45,7 +45,6 @@ const App = () => {
                         <Routes>
                             <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
                             <Route path="/admin" element={<Admin />} />
-                            <Route path="/booking-ticket" element={<Bookingticket />} />
                             <Route path="/payment" element={<Payment />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />

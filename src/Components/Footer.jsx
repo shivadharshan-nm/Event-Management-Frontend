@@ -6,7 +6,7 @@ const Footer = () => {
         <footer className="bg-gray-800">
   <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
   <p className="text-center text-2xl font-bold text-blue-500">   
-    <Link to="/" > Eventify  </Link> 
+    <Link to="/" >  Eventify  </Link> 
     </p>
     <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-100">
       Oops...You've reached the end of this page. Nothing more to see here. 
@@ -20,11 +20,15 @@ const Footer = () => {
       </li>
 
       <li>
+        <Link to="/events" className=' hover:text-blue-500 '>Events</Link>
+      </li>
+
+      <li>
         <Link to="/settings" className=' hover:text-blue-500'>Dashboard</Link>
       </li>
 
       <li>
-        <Link to="/events" className=' hover:text-blue-500'>Events</Link>
+        <Link to="/admin" className=' hover:text-blue-500'>Admin</Link>
       </li>
 
      

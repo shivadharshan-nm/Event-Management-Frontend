@@ -45,7 +45,7 @@ const Homepage = ({ isLoggedIn }) => {
     <div className="flex flex-col min-h-screen" >
       {isLoggedIn ? (
         <>
-          <Slider {...settings} className="w-full">
+          <Slider {...settings} className="w-full bg-gray-800">
             {events.map((event) => (
               <div key={event._id} className="relative">
                 <img

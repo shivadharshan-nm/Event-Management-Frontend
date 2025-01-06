@@ -9,6 +9,7 @@ const BookingTicket = () => {
   const { userData } = useContext(UserDetailsContext);
   const { event_id } = useParams();
   const _id = event_id;
+  console.log('Event ID:', _id);
   const navigate = useNavigate();
   const [ticketQuantity, setTicketQuantity] = useState(1); // Default 1 ticket
   const [ticketPrice, setTicketPrice] = useState(0);
@@ -20,8 +21,10 @@ const BookingTicket = () => {
 
   useEffect(() => {
     const fetchEventDetails = async () => {
+      setLoading(true);
       try {
-        const response = await api.get(`/events/${_id}`);
+        // Use event_id directly from params
+        const response = await api.get(`/events/${event_id}`);
         const eventData = response.data;
         setPostDetails(eventData);
         if (eventData.ticketPricing.length > 0) {
@@ -31,11 +34,16 @@ const BookingTicket = () => {
         }
       } catch (error) {
         console.error('Error fetching event details:', error);
+        toast.error('An error occurred while fetching event details. Please try again later.');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchEventDetails();
-  }, [_id]);
+    if (event_id) {
+      fetchEventDetails();
+    }
+  }, [event_id]);
 
   const handleTicketTypeChange = (type) => {
     const selectedTicket = postDetails.ticketPricing.find(ticket => ticket.tier === type);

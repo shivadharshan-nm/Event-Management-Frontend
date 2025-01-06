@@ -41,11 +41,12 @@ const EventListing = () => {
 
   const handleViewDetails = async (event) => {
     try {
-      const detailsResponse = await api.get(`/events/${event._id}`);
-      const bookingsResponse = await api.get(`/events/${event._id}/bookings`);
-      setSelectedEvent({ ...detailsResponse.data, bookings: bookingsResponse.data });
+      const detailsResponse = await api.get(`/events/${event.id}`);
+      //const bookingsResponse = await api.get(`/tickets/${event.id}`);
+      setSelectedEvent({ ...detailsResponse.data});
     } catch (error) {
       console.error('Error fetching event details:', error);
+      alert('An error occurred while fetching event details. Please try again later.');
     }
   };
 
@@ -81,7 +82,7 @@ const EventListing = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredEvents.map((event) => (
-            <div key={event._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div key={event.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
               <img src={getImageUrl(event.media)} alt={event.name} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h2 className="text-xl font-bold">{event.name}</h2>
@@ -108,7 +109,12 @@ const EventListing = () => {
               ))}
             </ul>
             <button onClick={handleCloseModal} className="mt-4 bg-blue-500 text-white p-2 rounded-lg">Close</button>
-            <Link to={`/book/${selectedEvent._id}`} className="mt-4 bg-green-500 text-white p-2 rounded-lg inline-block">Book Tickets</Link>
+            <Link 
+              to={`/posts/bookingTicket/${selectedEvent.id}`} 
+              className="mt-4 bg-green-500 text-white p-2 rounded-lg inline-block"
+            >
+              Book Tickets
+            </Link>
           </div>
         </div>
       )}
