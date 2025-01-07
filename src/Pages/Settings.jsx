@@ -5,6 +5,7 @@ import { UserDetailsContext } from '../App';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { decodeToken } from '../Utils/decodeToken';
+import api from '../Services/Api';
 
 const Settings = () => {
   const { userData, setUserData } = useContext(UserDetailsContext);
@@ -27,8 +28,8 @@ const Settings = () => {
 
     const fetchTickets = async () => {
       try {
-        const response = await axios.get('/api/tickets/user');
-        console.log("Tickets from /api/tickets/user:", response.data);
+        const response = await api.get('/tickets/user');
+        console.log("Tickets from /tickets/user:", response.data);
         setTickets(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Error fetching tickets:', error);
@@ -41,7 +42,7 @@ const Settings = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('/api/users/profile', { username, email });
+      const response = await api.put('/users/profile', { username, email });
       setUserData(response.data);
       toast.success('Profile updated successfully');
     } catch (error) {
