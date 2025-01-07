@@ -41,7 +41,7 @@ const Settings = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('/api/user/update', { username, email });
+      const response = await axios.put('/api/users/profile', { username, email });
       setUserData(response.data);
       toast.success('Profile updated successfully');
     } catch (error) {
