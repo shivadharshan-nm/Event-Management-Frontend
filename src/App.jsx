@@ -37,7 +37,7 @@ const App = () => {
     }, []);
 
     return (
-        <UserDetailsContext.Provider value={{ userData, setUserData }}>
+        <UserDetailsContext.Provider value={{ userData }}>
             <Router>
                 <div className="flex flex-col min-h-screen">
                     <Navbar isLoggedIn={isLoggedIn} />
@@ -48,13 +48,13 @@ const App = () => {
                             <Route path="/payment" element={<Payment />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-                            <Route path="/events" element={<EventListing />} />
+                            <Route path="/events" element={<EventListing isLoggedIn={isLoggedIn} />} />
                             <Route path="/settings" element={<Settings />} />
                             <Route path="/request-password-reset" element={<RequestPasswordReset />} />
                             <Route path="/verify-otp-reset-password" element={<VerifyOtpResetPassword />} />
                             <Route path="/password-reset-success" element={<PasswordResetSuccess />} />
                             <Route path="/logout" element={<LogoutPage setIsLoggedIn={setIsLoggedIn} />} />
-                            <Route path="/eventListing/:event_id" element={<EventListing />} />
+                            <Route path="/eventListing/:event_id" element={<EventListing isLoggedIn={isLoggedIn} />} />
                             <Route path="/posts/bookingTicket/:event_id" element={<Bookingticket />} />
                             <Route path="*" element={<PageNotFound />} />
                         </Routes>

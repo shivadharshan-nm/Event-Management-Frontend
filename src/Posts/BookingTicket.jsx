@@ -19,6 +19,8 @@ const BookingTicket = () => {
   const [loading, setLoading] = useState(false); // To show loading status
   const [totalPrice, setTotalPrice] = useState(0);
 
+  console.log('User Data:', userData);
+
   useEffect(() => {
     const fetchEventDetails = async () => {
       setLoading(true);
@@ -60,7 +62,7 @@ const BookingTicket = () => {
   };
 
   const handleBooking = async () => {
-    if (!userData) {
+    if (!userData || !userData.username) {
       toast.error('You must be logged in to book a ticket!');
       navigate('/login');  // Redirect to login page if not logged in
       return;
@@ -94,12 +96,12 @@ const BookingTicket = () => {
     console.log('Ticket Quantity:', ticketQuantity);
     console.log('Total Price:', totalPrice);
 
-    if (!userData) {
-      alert('Please log in to book tickets.');
-      navigate('/login');
-      return;
-    }
-    setLoading(true);
+    // if (!userData || !userData.username) {
+    //   alert('Please log in to book tickets.');
+    //   navigate('/login');
+    //   return;
+    // }
+    // setLoading(true);
 
     try {
       // Navigate to the payment page with the necessary parameters
