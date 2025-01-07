@@ -37,7 +37,7 @@ const App = () => {
     }, []);
 
     return (
-        <UserDetailsContext.Provider value={{ userData }}>
+        <UserDetailsContext.Provider value={{ userData, setUserData }}>
             <Router>
                 <div className="flex flex-col min-h-screen">
                     <Navbar isLoggedIn={isLoggedIn} />
